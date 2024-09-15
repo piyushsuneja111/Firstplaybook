@@ -1,0 +1,6 @@
+[ec2-user@ip-172-31-43-150 ansible]$ cat inventory
+[clientservers]
+172.31.32.190
+
+[dockerservers]
+172.31.36.133
