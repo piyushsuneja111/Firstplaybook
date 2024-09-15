@@ -1,0 +1,23 @@
+---
+- name: Install nginx
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install Nginx
+      yum:
+        name: nginx
+        state: present
+    - name: Start Nginx
+      service:
+        name: nginx
+        state: started
+    - name: Verify nginx package
+      command: rpm -q nginx
+      register: nginx_check
+      failed_when: nginx_check.rc != 0
+      ignore_errors: true
+
+    - name: Display configure status
+      debug:
+        msg: "Nginx package install status: {{ nginx_check.stdout }}"
