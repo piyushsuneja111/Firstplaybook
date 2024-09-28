@@ -1,5 +1,0 @@
-[clientservers]
-172.31.32.190
-
-[dockerservers]
-172.31.36.133
