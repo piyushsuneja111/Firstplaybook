@@ -1,0 +1,38 @@
+---
+- name: Disable and remove nginx on RedHat-based systems
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Stop nginx service if running
+      service:
+        name: nginx
+        state: stopped
+      ignore_errors: true  # Ignore errors if the service is not found
+
+    - name: Disable nginx service on startup
+      service:
+        name: nginx
+        enabled: no
+      ignore_errors: true  # Ignore errors if the service is not found
+
+    - name: Remove nginx package using yum
+      yum:
+        name: nginx
+        state: absent
+      ignore_errors: true  # Ignore errors if the package is not installed
+
+    - name: Clean up any residual nginx packages
+      command: yum autoremove -y
+      ignore_errors: true
+
+    - name: Verify nginx removal
+      command: rpm -q nginx
+      register: nginx_check
+      failed_when: nginx_check.rc == 0
+      ignore_errors: true
+
+    - name: Display removal status
+      debug:
+        msg: "Nginx package removal status: {{ nginx_check.stdout }}"
+
