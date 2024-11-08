@@ -1,0 +1,9 @@
+---
+- name: Upgrade Nginx Package
+  hosts: all
+  become: yes
+  tasks:
+    - name: Upgrade nginx package
+      ansible.builtin.yum:
+        name: nginx
+        state: latest
